@@ -22,7 +22,6 @@ void AS_DestroyStack(ArrayStack* Stack)
 	free(Stack);
 }
 
-
 void AS_Push(ArrayStack* Stack, ElementType Data)
 {
 	Stack->Top++;
@@ -63,6 +62,7 @@ int AS_IsEmpty(ArrayStack* Stack)
 	return (Stack->Top == -1);
 }
 
+// 1¹ø ¹®Á¦
 int AS_IsFull(ArrayStack* Stack)
 {
 	return Stack->Top == Stack->Capacity - 1;

@@ -14,6 +14,55 @@ int AS_IsFull() {
 // 스택에 값을 push하다 용량이 부족하면 동적 배열의 용량을 2배 늘려서 값을 저장하도록 만들어보세요.
 // 테스트 초기에 용량을 50개 설정하고 100개를 저장해서 값을 출력해보세요.
 
+/*
+=====================================================================
+// 문제 1. 스택이 가득찼는지 판단하는 함수를 만드세요.
+int AS_IsFull(ArrayStack* Stack) {
+   if (Stack->Capacity == (Stack->Top + 1)) {
+	  return 1;
+   }
+   else {
+	  return 0;
+   }
+
+}
+
+// 문제 2. 스택의 Capacity를 50개로 설정하고 while문으로 Stack이 가득 찰때까지 100처음 값을
+// 증가시키면서 저장하고 스택이 빌때까지 값을 출력해보세요..
+
+void Exer2() {
+   ArrayStack* Stack = NULL;
+
+   AS_CreateStack(&Stack, 50);
+
+   int count = 100;
+
+   while (!AS_IsFull(Stack)) {
+	  AS_Push(Stack, count++);
+   }
+
+   while (!AS_IsEmpty(Stack)) {
+	  printf("Popped %d\n", AS_Pop(Stack));
+   }
+
+}
+
+// extra.
+// 스택에 값을 push하다 용량이 부족하면 동적배열의 용량을 2배 늘려서 값을 저장하도록
+// 만들어 보세요...
+// 테스트 초기에 용량을 50개 설정하고 100개을 저장해서 값을 출력해보세요...
+void AS_Push2(ArrayStack* Stack, ElementType Data)
+{
+   if (AS_IsFull(Stack)) { // 가득찼으면
+	  Stack->Capacity = Stack->Capacity * 2; // 용량을 두배로 증가.
+	  Stack->Nodes = realloc(Stack->Nodes, Stack->Capacity * sizeof(Node)); // 동적배열 재할당.
+   }
+
+   Stack->Top++;
+   Stack->Nodes[Stack->Top].Data = Data;
+}
+*/
+
 int main(void)
 {
 	int i = 0;
