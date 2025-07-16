@@ -1,7 +1,7 @@
 #include "LinkedListStack.h"
 
 // 문제 1. GetSize 함수를 개선하세요...
-// 문제 2. 
+// 문제 2. Pop 함수 개선
 
 int main(void)
 {

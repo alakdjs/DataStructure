@@ -9,12 +9,14 @@ typedef struct tagNode
 {
 	char* Data;
 	struct tagNode* NextNode;
+	struct tagNode* PrevNode; // 2번 문제
 } Node;
 
 typedef struct tagLinkedListStack
 {
 	Node* List;
 	Node* Top;
+	int Count;  // 1번 문제 
 } LinkedListStack;
 
 void LLS_CreateStack(LinkedListStack** Stack);

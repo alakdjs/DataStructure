@@ -1,15 +1,13 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "LinkedListStack.h"
 
-// 1번 문제
-static int Count = 0;
-
 void LLS_CreateStack(LinkedListStack** Stack)
 {
 	// 스택을 자유 저장소에 생성
 	(*Stack)		= (LinkedListStack*)malloc(sizeof(LinkedListStack));
 	(*Stack)->List	= NULL;
 	(*Stack)->Top	= NULL;
+	(*Stack)->Count = 0;
 }
 
 void LLS_DestroyStack(LinkedListStack* Stack)
@@ -31,6 +29,7 @@ Node* LLS_CreateNode(char* NewData)
 
 	strcpy(NewNode->Data, NewData); // 데이터를 저장한다.
 	NewNode->NextNode = NULL;		// 다음 노드에 대한 포인터는 NULL로 초기화한다.
+	NewNode->PrevNode = NULL;		// 2번 문제
 	
 	return NewNode;					// 노드의 주소를 반환한다.
 }
@@ -43,19 +42,22 @@ void LLS_DestroyNode(Node* _Node)
 
 void LLS_Push(LinkedListStack* Stack, Node* NewNode)
 {
+
 	if (Stack->List == NULL)
 	{
 		Stack->List = NewNode;
+		Stack->Top = NewNode; // 2번 문제
 	}
 	else
 	{
 		// 스택의 Top에 신규 노드를 연결한다.
 		Stack->Top->NextNode = NewNode;
+		NewNode->PrevNode = Stack->Top; // 2번 문제
 	}
 
 	//  스택의 Top 필드에 새 노드의 주소를 등록한다. 
 	Stack->Top = NewNode;
-	Count++; // 1번
+	Stack->Count++; // 1번
 }
 
 Node* LLS_Pop(LinkedListStack* Stack)
@@ -63,6 +65,20 @@ Node* LLS_Pop(LinkedListStack* Stack)
 	//  LLS_Pop() 함수가 반환할 최상위 노드 저장 
 	Node* TopNode = Stack->Top;
 
+	if (Stack->Top->PrevNode == NULL)
+	{
+		Stack->List = NULL;
+		Stack->Top = NULL;
+	}
+	else
+	{
+		Stack->Top = Stack->Top->PrevNode;
+		Stack->Top->NextNode = NULL;
+	}
+
+	TopNode->PrevNode = NULL;
+
+	/*
 	if (Stack->List == Stack->Top)
 	{
 		Stack->List = NULL;
@@ -76,12 +92,14 @@ Node* LLS_Pop(LinkedListStack* Stack)
 		{
 			CurrentTop = CurrentTop->NextNode;
 		}
-
+		
 		// // CurrentTop을 Top에 저장
 		Stack->Top = CurrentTop;
 		Stack->Top->NextNode = NULL;
 	}
-	Count--; // 1번
+	*/
+
+	Stack->Count--; // 1번
 	return TopNode;
 }
 
@@ -102,7 +120,7 @@ int LLS_GetSize(LinkedListStack* Stack)
 		Count++;
 	}
 	*/
-	return Count;
+	return Stack->Count; // 1번
 }
 
 int LLS_IsEmpty(LinkedListStack* Stack)
