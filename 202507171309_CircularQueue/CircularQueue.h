@@ -13,11 +13,11 @@ typedef struct tagNode
 
 typedef struct tagCircularQueue
 {
-	int Capacity;
-	int Front;
-	int Rear;
+	int Capacity; // 전체용량
+	int Front; // 전단 인덱스
+	int Rear; // 후단 인덱스
 
-	Node* Nodes;
+	Node* Nodes; // 동적 배열의 주소값 저장하는 인덱스
 } CircularQueue;
 
 void        CQ_CreateQueue(CircularQueue** Queue, int Capacity);
