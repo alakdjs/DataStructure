@@ -22,5 +22,6 @@ void	  LCRS_AddChildNode(LCRSNode* RarentNode, LCRSNode* ChildNode);
 void      LCRS_PrintTree(LCRSNode* Node, int Depth);
 
 void	  LCRS_LevelPrintTree(LCRSNode* Node, int Level, int Depth);
+void	  LCRS_LevelPrintTree2(LCRSNode* Tree, int level);
 
 #endif

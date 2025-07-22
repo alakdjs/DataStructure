@@ -44,6 +44,9 @@ int main()
     scanf("%d", &level);
     LCRS_LevelPrintTree(Root, level, 0);
 
+    printf("\n레벨 3: ");
+    LCRS_LevelPrintTree2(Root, 3);
+
     // 트리 소멸시키기
     LCRS_DestroyTree(Root);
 

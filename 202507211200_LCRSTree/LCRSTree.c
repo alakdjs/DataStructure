@@ -68,15 +68,30 @@ void LCRS_PrintTree(LCRSNode* Node, int Depth)
 
 void LCRS_LevelPrintTree(LCRSNode* Node, int Level, int Depth)
 {
+	if (Level < Depth)
+		return;
 
-	if (Depth + 1 == Level)
-	{
+	if (Depth == Level)
 		printf("%c ", Node->Data);
-	}
 
 	if (Node->LeftChild != NULL)
 		LCRS_LevelPrintTree(Node->LeftChild, Level, Depth + 1);
 
 	if (Node->RightSibling != NULL)
 		LCRS_LevelPrintTree(Node->RightSibling, Level, Depth);
+}
+
+void LCRS_LevelPrintTree2(LCRSNode* Tree, int level)
+{
+	if (level < 0)
+		return;
+
+	if (level == 0)
+		printf("%c, ", Tree->Data);
+
+	if (Tree->LeftChild != NULL)
+		LCRS_LevelPrintTree2(Tree->LeftChild, level - 1);
+
+	if (Tree->RightSibling != NULL)
+		LCRS_LevelPrintTree2(Tree->RightSibling, level);
 }
