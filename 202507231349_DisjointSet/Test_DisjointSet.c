@@ -9,10 +9,10 @@ int main(void)
 	DisjointSet* Set3 = DS_MakeSet(&c);
 	DisjointSet* Set4 = DS_MakeSet(&d);
 
-	printf("SEt1 == Set2 : %d \n", DS_FindSet(Set1) == DS_FindSet(Set2));
+	printf("Se1 == Set2 : %d \n", DS_FindSet(Set1) == DS_FindSet(Set2));
 
 	DS_UnionSet(Set1, Set3);
-	printf("Set1 == Set3 : &d \n", DS_FindSet(Set1) == DS_FindSet(Set3));
+	printf("Set1 == Set3 : %d \n", DS_FindSet(Set1) == DS_FindSet(Set3));
 
 	DS_UnionSet(Set3, Set4);
 	printf("Set3 == Set4 : %d \n", DS_FindSet(Set3) == DS_FindSet(Set4));
