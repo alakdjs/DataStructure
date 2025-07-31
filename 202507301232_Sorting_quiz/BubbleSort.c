@@ -1,6 +1,7 @@
 /*
 #include <stdio.h> 
 #include "Score.h"
+#include <time.h>
 
 void BubbleSort(Score DataSet[], int Length)
 {
@@ -36,7 +37,11 @@ int main(void)
     int Length = sizeof DataSet / sizeof DataSet[0];
     int i = 0;
 
+    double startTime = 0.0, endTime = 0.0;
+    startTime = (double)clock() / CLOCKS_PER_SEC;
+
     BubbleSort(DataSet, Length);
+    endTime = (double)clock() / CLOCKS_PER_SEC;
 
     printf("1~10개: \n");
     for (i = 0; i < 10; i++)
@@ -44,11 +49,17 @@ int main(void)
         printf("번호: %d, 점수: %f\n", DataSet[i].number, DataSet[i].score);
     }
 
+    printf("------------------------------------------------------\n");
+
     printf("\n29990~29999개: \n");
     for (i = 29990; i <= 29999; i++)
     {
         printf("번호: %d, 점수: %f\n", DataSet[i].number, DataSet[i].score);
     }
+
+    printf("\n");
+    printf("버블소트 3만개 데이터 소팅 시간: %lf sec\n", endTime - startTime);
+
 
     return 0;
 }
