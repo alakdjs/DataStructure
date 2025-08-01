@@ -22,6 +22,33 @@ Node* SequentialSearch(Node* Head, double Target) {
 // 2. 전진이동법
 // Target 매개변수에 전달된 값을 가진 노드를 찾고 해당 노드를 싱글링크드 리스트의 맨앞으로 이동시킨다(헤드노드로 만들다.)
 Node* MoveToFront(Node** Head, double Target) {
+
+	if (*Head == NULL) {
+		return NULL;
+	}
+
+	if ((*Head)->Data.score == Target) {
+		return *Head;
+	}
+
+	Node* Current = *Head;
+
+	while (Current->NextNode != NULL) {
+		if (Current->NextNode->Data.score == Target) {
+			Node* prev = Current->NextNode;
+
+			Current->NextNode = prev->NextNode;
+
+			prev->NextNode = *Head;
+
+			*Head = prev;
+
+			return prev;
+		}
+
+		Current = Current->NextNode;
+	}
+
 	return NULL;
 }
 
@@ -29,6 +56,45 @@ Node* MoveToFront(Node** Head, double Target) {
 // Target 매개변수에 전달된 값을 가진 노드를 찾고 해당 노드를 싱글링크드 리스트에서
 // 찾는 노드를 한칸 앞쪽으로 이동시킨다.
 Node* Transpose(Node** Head, double Target) {
+
+	if (*Head == NULL) {
+		return NULL;
+	}
+
+	if ((*Head)->Data.score == Target) {
+		return *Head;
+	}
+
+	if ((*Head)->NextNode != NULL && (*Head)->NextNode->Data.score == Target) {
+
+		Node* prev2 = (*Head)->NextNode;
+
+		(*Head)->NextNode = prev2->NextNode;
+		prev2->NextNode = *Head;
+		*Head = prev2;
+
+		return prev2;
+	}
+
+	Node* Current = *Head;
+
+	while (Current->NextNode != NULL && Current->NextNode->NextNode != NULL) {
+		if (Current->NextNode->NextNode->Data.score == Target) {
+
+			Node* prev = Current->NextNode;
+			Node* temp = prev->NextNode;
+
+			prev->NextNode = temp->NextNode;
+			temp->NextNode = prev;
+			Current->NextNode = temp;
+
+			return temp;
+
+		}
+
+		Current = Current->NextNode;
+	}
+
 	return NULL;
 }
 
@@ -70,7 +136,7 @@ int main(void)
 			break;
 		}
 
-		Node* targetNode = SequentialSearch(List, InputValue);
+		Node* targetNode = Transpose(&List, InputValue);
 
 		if (targetNode != NULL) {	// 찾는 score값을 가진 노드를 찾은 경우
 			printf("MATCH!!!! searchValue  number: %d, score: %lf\n",
