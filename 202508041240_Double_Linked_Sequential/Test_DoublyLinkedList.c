@@ -26,40 +26,48 @@ Node* SequntialSearch(Node* Head, double Target)
 // 2. 전진이동법
 // Target 매개변수에 전달된 값을 가진 노드를 찾고 해당 노드를 더블링크드 리스트의 맨앞으로 이동시킨다(헤드노드로 만들다.)
 Node* MoveToFront(Node** Head, double Target) {
-
 	Node* Current = (*Head);
 
 	while (Current != NULL) {
-
-		if (Current->Data.score == Target) {
-
-			if (Current == (*Head)) {
+		if (Current->Data.score == Target) {   // 찾는 값을 가진 노드를 찾음
+			if (Current == (*Head)) {   // 1. 헤드노드인 경우
 				return Current;
 			}
-			
-			if (Current->NextNode != NULL) {
-				Current->NextNode->PrevNode = Current->PrevNode;
-			}
+			else if (Current->NextNode == NULL) {   // 2. 꼬리노드인 경우
+				// Current 앞쪽 노드를 꼬리로 만든다.
+				Current->PrevNode->NextNode = NULL;
 
-			if (Current->PrevNode != NULL) {
+				// Current를 헤드노드로 만든다.
+				Current->PrevNode = NULL;
+				Current->NextNode = (*Head);
+				(*Head)->PrevNode = Current;
+
+				(*Head) = Current;
+
+				return Current;
+			}
+			else {
+				// Current 링크에서 제거한다.
 				Current->PrevNode->NextNode = Current->NextNode;
+				Current->NextNode->PrevNode = Current->PrevNode;
+
+				// Current를 헤드노드로 만든다.
+				Current->PrevNode = NULL;
+				Current->NextNode = (*Head);
+				(*Head)->PrevNode = Current;
+
+				(*Head) = Current;
+
+				return Current;
 			}
-
-			Current->PrevNode = NULL;
-			Current->NextNode = (*Head);
-			(*Head)->PrevNode = Current;
-			(*Head) = Current;
-
-			return Current;
-
 		}
 
 		Current = Current->NextNode;
 	}
 
 	return NULL;
-}
 
+}
 
 
 //3. 전위법
@@ -67,6 +75,39 @@ Node* MoveToFront(Node** Head, double Target) {
 Node* Transpose(Node** Head, double Target)
 {
 	Node* Current = (*Head);
+	Node* Prev = NULL;
+	Node* Next = NULL;
+
+	while (Current != NULL) {
+		if (Current->Data.score == Target) {
+			if (Current == (*Head)) {
+				return Current;
+			}
+
+			Prev = Current->PrevNode;
+			Next = Current->NextNode;
+
+
+			if (Prev == (*Head)) {
+				(*Head) = Current;
+			}
+			else {
+				Prev->PrevNode->NextNode = Current;
+			}
+			if (Next != NULL) {
+				Next->PrevNode = Prev;
+			}
+
+			Current->PrevNode = Prev->PrevNode;
+			Current->NextNode = Prev;
+			Prev->PrevNode = Current;
+			Prev->NextNode = Next;
+
+			return Current;
+		}
+
+		Current = Current->NextNode;
+	}
 
 	return NULL;
 }
@@ -117,6 +158,7 @@ int main(void)
 		// Node* targetNode = SequntialSearch(List, InputValue);
 		// Node* targetNode = MoveToFront(&List, InputValue);
 		Node* targetNode = Transpose(&List, InputValue);
+		// Node* targetNode = FrequencyMethod(&List, InputValue);
 
 		if (targetNode != NULL) {	//찾는 Score값을 가진 노드를 찾은 경우
 			printf("MATCH!!! searchValue: number:%d, score: %lf, Frequency: %d\n", targetNode->Data.number, targetNode->Data.score, targetNode->Frequency);

@@ -124,10 +124,50 @@ Node* Transpose(Node** Head, double Target) {
 }
 
 // 4. 계수법
-// Node에 빈도수(Frequency)를 저장하는 변수를 만들고
-// Target에 전달된 값을 가진 노드를 찾은 후 빈도수를 증가시키고
+// Node에 빈도수(Frequency)를 저장하는 변수를 만들고 o
+// Target에 전달된 값을 가진 노드를 찾은 후 빈도수를 증가시키고 o
 // 빈도수에 크기를 비교하여 해당 노드를 위치 시킨다.
 Node* FrequencyMethod(Node** Head, double Target) {
+	
+	Node* Current = *Head;
+	Node* Prev = NULL;
+
+	while (Current != NULL) {
+		if (Current->Data.score == Target) {
+			Current->Frequency++;
+
+			if (Prev != NULL) {
+				Prev->NextNode = Current->NextNode;
+			}
+			else {
+				return Current;
+			}
+
+			Node* Find = *Head;
+			Node* FindPrev = NULL;
+
+			while (Find != Current && Find->Frequency >= Current->Frequency) {
+				FindPrev = Find;
+				Find = Find->NextNode;
+			}
+
+			if (FindPrev == NULL) {
+				Current->NextNode = *Head;
+				*Head = Current;
+			}
+			else {
+				Current->NextNode = Find;
+				FindPrev->NextNode = Current;
+			}
+
+			return Current;
+		}
+
+		Prev = Current;
+		Current = Current->NextNode;
+
+	}
+
 	return NULL;
 }
 
@@ -147,6 +187,7 @@ int main(void)
 	for (i = 0; i < Length; i++)
 	{
 		NewNode = SLL_CreateNode(DataSet[i]);
+		NewNode->Frequency = 0;
 		SLL_AppendNode(&List, NewNode);
 	}
 
@@ -160,11 +201,10 @@ int main(void)
 			break;
 		}
 
-		Node* targetNode = Transpose(&List, InputValue);
+		Node* targetNode = FrequencyMethod(&List, InputValue);
 
 		if (targetNode != NULL) {	// 찾는 score값을 가진 노드를 찾은 경우
-			printf("MATCH!!!! searchValue  number: %d, score: %lf\n",
-				targetNode->Data.number, targetNode->Data.score);
+			printf("MATCH!!! searchValue: number:%d, score: %lf, Frequency: %d\n", targetNode->Data.number, targetNode->Data.score, targetNode->Frequency);
 		}
 		else {	// 찾는 score값을 가진 노드를 못 찾은 경우
 			printf("찾는 값을 가진 노드가 없음!!!!\n");
@@ -173,16 +213,14 @@ int main(void)
 		// 앞에 10개
 		for (int i = 0; i < 10; i++) {
 			Current = SLL_GetNodeAt(List, i);
-			printf("DataSet[%d]  Number: %d, Score: %.4lf\n",
-				i, Current->Data.number, Current->Data.score);
+			printf("DataSet[%d] number:%d, score: %.4lf, Frequency: %d\n", i, Current->Data.number, Current->Data.score, Current->Frequency);
 		}
 
 		printf("===============================================\n");
 
 		for (int i = Length - 10; i < Length; i++) {
 			Current = SLL_GetNodeAt(List, i);
-			printf("DataSet[%d]  Number: %d, Score: %.4lf\n",
-				i,  Current->Data.number, Current->Data.score);
+			printf("DataSet[%d] number:%d, score: %.4lf, Frequency: %d\n", i, Current->Data.number, Current->Data.score, Current->Frequency);
 		}
 
 	}
