@@ -124,50 +124,70 @@ Node* Transpose(Node** Head, double Target) {
 }
 
 // 4. 계수법
-// Node에 빈도수(Frequency)를 저장하는 변수를 만들고 o
-// Target에 전달된 값을 가진 노드를 찾은 후 빈도수를 증가시키고 o
+// Node에 빈도수(Frequency)를 저장하는 변수를 만들고
+// Target에 전달된 값을 가진 노드를 찾은 후 빈도수를 증가시키고
 // 빈도수에 크기를 비교하여 해당 노드를 위치 시킨다.
 Node* FrequencyMethod(Node** Head, double Target) {
-	
-	Node* Current = *Head;
+	Node* Current = (*Head);
 	Node* Prev = NULL;
 
 	while (Current != NULL) {
-		if (Current->Data.score == Target) {
-			Current->Frequency++;
+		if (Current->Data.score == Target) { // 찾는 값을 가진 노드를 찾음.
+			Current->Frequency++;   // 빈도수 증가 시킴.
 
-			if (Prev != NULL) {
-				Prev->NextNode = Current->NextNode;
-			}
-			else {
+			if (Current == (*Head)) {   // 1. 찾는 값을 가진 노드가 헤드노드인 경우
 				return Current;
 			}
+			else { // 2. 찾는 값을 가진 노드가 헤드노드가 아닌 경우
 
-			Node* Find = *Head;
-			Node* FindPrev = NULL;
+				// 앞쪽 노드와 빈도수를 비교한다.
+				if (Prev->Frequency < Current->Frequency) { // 앞쪽 노드의 빈도수가 Current 빈도수보다 작다.
 
-			while (Find != Current && Find->Frequency >= Current->Frequency) {
-				FindPrev = Find;
-				Find = Find->NextNode;
+					// Current노드를 링크에서 제거한다.
+					Prev->NextNode = Current->NextNode;
+
+
+					// 제거한 Current노드를 헤드노드에서 부터 빈도수를 
+					// 비교하여 삽입 위치를 찾는다.
+
+					Node* FindNode = Current; // 찾은 노드를 FindNode 변수에 저장
+
+					Current = (*Head);
+					Prev = NULL;
+
+					// 빈도수를 비교해서 삽입위치를 찾는다.
+					while (Current != NULL) {
+
+						if (Current->Frequency < FindNode->Frequency) {   // 제거한 FindNode노드의 삽입위치를 찾는다.
+
+							if (Current == (*Head)) { // Current가 헤드인 경우, FindNode가 헤드노드가 되어야 함.
+								FindNode->NextNode = Current;
+								(*Head) = FindNode;
+
+								return FindNode;
+							}
+							else { // Current가 헤드노드가 아닌 경우, FindNode를 Prev와 Current 사이에 삽입.
+
+								Prev->NextNode = FindNode;
+								FindNode->NextNode = Current;
+
+								return FindNode;
+							}
+						}
+
+						Prev = Current;
+						Current = Current->NextNode;
+					}
+				}
+				else {   // 앞쪽 노드의 빈도수가 Current 빈도수보다 같거나 크다.
+					return Current;
+				}
 			}
-
-			if (FindPrev == NULL) {
-				Current->NextNode = *Head;
-				*Head = Current;
-			}
-			else {
-				Current->NextNode = Find;
-				FindPrev->NextNode = Current;
-			}
-
-			return Current;
 		}
 
 		Prev = Current;
 		Current = Current->NextNode;
-
 	}
-
 	return NULL;
 }
 

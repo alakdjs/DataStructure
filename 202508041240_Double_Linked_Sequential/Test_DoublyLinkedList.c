@@ -75,41 +75,64 @@ Node* MoveToFront(Node** Head, double Target) {
 Node* Transpose(Node** Head, double Target)
 {
 	Node* Current = (*Head);
-	Node* Prev = NULL;
-	Node* Next = NULL;
 
 	while (Current != NULL) {
-		if (Current->Data.score == Target) {
-			if (Current == (*Head)) {
+
+		if (Current->Data.score == Target) {   // 찾는 값을 가진 노드를 찾는다.
+
+			// 찾는 값을 가진 노드를 찾음.
+			if (Current == (*Head)) { // 1. Current가 헤드노드인 경우
 				return Current;
 			}
+			else if (Current->NextNode == NULL) {   // 2. Current가 꼬리노드인 경우
+				// Current를 링크에서 제거한다.
+				Current->PrevNode->NextNode = NULL; // Current의 앞쪽노드를 꼬리노드로 만듦
 
-			Prev = Current->PrevNode;
-			Next = Current->NextNode;
+				// Current를 앞쪽노드와 앞앞쪽노드 사이에 삽입
+				Current->NextNode = Current->PrevNode;
+				Current->PrevNode = Current->PrevNode->PrevNode;
 
+				Current->NextNode->PrevNode = Current;
+				Current->PrevNode->NextNode = Current;
 
-			if (Prev == (*Head)) {
+				return Current;
+			}
+			else if (Current == (*Head)->NextNode) {   // 3. Current가 헤드노드 다음인경우
+
+				// Current를 링크에서 제거한다.
+				Current->NextNode->PrevNode = Current->PrevNode;
+				Current->PrevNode->NextNode = Current->NextNode;
+
+				// Current를 헤드노드로 만든다.
+				Current->PrevNode = NULL;
+				Current->NextNode = (*Head);
+				(*Head)->PrevNode = Current;
+
 				(*Head) = Current;
-			}
-			else {
-				Prev->PrevNode->NextNode = Current;
-			}
-			if (Next != NULL) {
-				Next->PrevNode = Prev;
-			}
 
-			Current->PrevNode = Prev->PrevNode;
-			Current->NextNode = Prev;
-			Prev->PrevNode = Current;
-			Prev->NextNode = Next;
+				return Current;
+			}
+			else { // 4. 이외의 경우 (헤드도 아니고, 헤드 다음도아니고, 꼬리도 아닌경우)
+				// Current를 링크에서 제거한다.
+				Current->PrevNode->NextNode = Current->NextNode;
+				Current->NextNode->PrevNode = Current->PrevNode;
 
-			return Current;
+				// Current노드를 앞노드와 앞앞노드 사이에 삽입한다.
+				Current->NextNode = Current->PrevNode;
+				Current->PrevNode = Current->PrevNode->PrevNode;
+
+				Current->PrevNode->NextNode = Current;
+				Current->NextNode->PrevNode = Current;
+
+				return Current;
+			}
 		}
 
 		Current = Current->NextNode;
 	}
 
 	return NULL;
+
 }
 
 
@@ -117,7 +140,70 @@ Node* Transpose(Node** Head, double Target)
 //조회수(탐색횟수)에 따른 이동
 Node* FrequencyMethod(Node** Head, double Target)
 {
+	Node* Current = (*Head);
 
+	while (Current != NULL) {
+		if (Current->Data.score == Target) {  // 찾는 값을 가진 노드를 찾는다.
+			// 찾는 값을 가진 노드를 찾음.
+			// 빈도수를 증가 시킴.
+			Current->Frequency++;
+
+			if (Current == (*Head)) {   // 1. 찾는 값을 가진 노드가 헤드노드인 경우
+				return Current;
+			}
+			else { // 2. 찾는 값을 가진 노드가 헤드노드가 아닌 경우
+				if (Current->PrevNode->Frequency >= Current->Frequency) { // 앞쪽노드의 빈도수가 Current의 빈도수보다 크거나 같은 경우
+					return Current;
+				}
+				else {  // 앞쪽 노드의 빈도수가  Current의 빈도수보다 작은 경우
+
+					// Current노드를 링크에서 제거한다.
+					Current->PrevNode->NextNode = Current->NextNode;
+					if (Current->NextNode != NULL) {
+						Current->NextNode->PrevNode = Current->PrevNode;
+					}
+
+					// FindNode의 삽입위치를 찾는다.
+					Node* FindNode = Current;
+
+					Current = (*Head);
+
+					while (Current != NULL) {
+						if (Current->Frequency < FindNode->Frequency) {   // Current의 빈도수가 FindNode의 빈도수보다 작은 경우.
+
+							if (Current == (*Head)) {   // Current노드가 헤드 노드인 경우, FindNode를 헤드노드로 만든다.
+								FindNode->NextNode = Current;
+								Current->PrevNode = FindNode;
+								FindNode->PrevNode = NULL;
+
+								(*Head) = FindNode;
+								return Current;
+							}
+							else {   // Current가 헤드 노드가 아닌 경우, FindNode를 Current노드의 앞쪽에 삽입한다.
+
+								FindNode->NextNode = Current;
+								FindNode->PrevNode = Current->PrevNode;
+
+								FindNode->PrevNode->NextNode = FindNode;
+								FindNode->NextNode->PrevNode = FindNode;
+
+								return Current;
+							}
+						}
+
+						Current = Current->NextNode;
+					}
+
+
+				}
+
+			}
+
+		}
+
+
+		Current = Current->NextNode;
+	}
 
 	return NULL;
 }
@@ -157,8 +243,8 @@ int main(void)
 
 		// Node* targetNode = SequntialSearch(List, InputValue);
 		// Node* targetNode = MoveToFront(&List, InputValue);
-		Node* targetNode = Transpose(&List, InputValue);
-		// Node* targetNode = FrequencyMethod(&List, InputValue);
+		// Node* targetNode = Transpose(&List, InputValue);
+		Node* targetNode = FrequencyMethod(&List, InputValue);
 
 		if (targetNode != NULL) {	//찾는 Score값을 가진 노드를 찾은 경우
 			printf("MATCH!!! searchValue: number:%d, score: %lf, Frequency: %d\n", targetNode->Data.number, targetNode->Data.score, targetNode->Frequency);
