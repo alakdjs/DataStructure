@@ -64,7 +64,7 @@ void LQ_Enqueue(LinkedQueue* Queue, Node* NewNode)
 
         // 꼬리노드보다 우선순위가 큰 경우
         Node* Current = Queue->Front;   // 헤드노드의 주소값을 저장
-        Node* Prev = NULL;
+        Node* Prev = NULL;              // Current의 이전노드의 주소값을 저장
 
         while (Current != NULL) {
             // NewNode의 우선순위보다 우선순위가 낮은 노드를 찾는다.

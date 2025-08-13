@@ -12,9 +12,9 @@ typedef struct tageHeapNode {
 } HeapNode;
 
 typedef struct tagHeap {
-	HeapNode* Nodes;
-	int Capacity;
-	int UsedSize;
+	HeapNode* Nodes; // 동적 배열 주소값 저장 공간
+	int Capacity;	 // 전체 용량
+	int UsedSize;	 // 데이터 들어가있는 개수, 다음 데이터가 들어갈 위치 (배열의 인덱스 번호)
 } Heap;
 
 Heap* HEAP_Create(int InitialSize);
