@@ -20,14 +20,15 @@ int** CreateMatrix(int column, int row) {
 
 }
 
+// 동적 이차원 배열을 삭제(반환)처리
 void RemoveMatrix(int** ppMatrix, int vertex) {
-
 	for (int i = 0; i < vertex; i++) {
 		free((ppMatrix)[i]);
 	}
 	free(ppMatrix);
 }
 
+// 간선정보를 동적이차원 배열에 저장
 void AddEdge(int** ppMatrix, int u, int v) {
 	u--;
 	v--;
