@@ -1,4 +1,6 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Graph.h"
+#include <string.h>
 
 Graph* CreateGraph()
 {
@@ -25,7 +27,11 @@ Vertex* CreateVertex( VElementType Data )
 {
     Vertex* V = (Vertex*)malloc( sizeof( Vertex ) );
     
-    V->Data = Data;
+    int length = strlen(Data);  // 인자로 전달된 문자열의 길이를 계산
+    // V->Data = Data;
+    V->Data = (char*)malloc(sizeof(char) * (length + 1)); // 문자열 저장할 동적 메모리 할당.
+    strcpy(V->Data, Data);  // 입력 문자열을 정점 내부에 복사
+
     V->Next = NULL;
     V->AdjacencyList = NULL;
     V->Visited = NotVisited;
@@ -110,7 +116,7 @@ void PrintGraph ( Graph* G )
 
     while ( V != NULL )
     {
-        printf( "%c : ", V->Data );        
+        printf( "%s : ", V->Data );        
         
         if ( (E = V->AdjacencyList) == NULL ) {
             V = V->Next;
@@ -120,7 +126,7 @@ void PrintGraph ( Graph* G )
 
         while ( E != NULL )
         {
-            printf("%c[%d] ", E->Target->Data, E->Weight );
+            printf("%s[%d] ", E->Target->Data, E->Weight );
             E = E->Next;
         }
 

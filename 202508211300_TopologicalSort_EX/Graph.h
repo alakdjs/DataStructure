@@ -6,7 +6,8 @@
 
 enum VisitMode { Visited, NotVisited };
 
-typedef int VElementType;
+// typedef int VElementType;
+typedef char* VElementType;
 
 typedef struct tagVertex
 {

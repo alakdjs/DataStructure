@@ -10,16 +10,16 @@ int main( void )
     Graph* graph = CreateGraph();
     
     //  정점 생성 
-    
-    Vertex* A = CreateVertex( 'A' );
-    Vertex* B = CreateVertex( 'B' );
-    Vertex* C = CreateVertex( 'C' );
-    Vertex* D = CreateVertex( 'D' );
-    Vertex* E = CreateVertex( 'E' );
-    Vertex* F = CreateVertex( 'F' );
-    Vertex* G = CreateVertex( 'G' );
-    Vertex* H = CreateVertex( 'H' );
-    
+    Vertex* A = CreateVertex( "C" );
+    Vertex* B = CreateVertex( "C++" );
+    Vertex* C = CreateVertex( "C#" );
+    Vertex* D = CreateVertex( "자료구조" );
+    Vertex* E = CreateVertex( "알고리즘" );
+    Vertex* F = CreateVertex( "Unity" );
+    Vertex* G = CreateVertex( "Unreal" );
+    Vertex* H = CreateVertex( "게임개발" );
+    Vertex* I = CreateVertex( "취업" );
+
     //  그래프에 정점을 추가 
     AddVertex( graph, A );
     AddVertex( graph, B );
@@ -29,24 +29,27 @@ int main( void )
     AddVertex( graph, F );
     AddVertex( graph, G );
     AddVertex( graph, H );
+    AddVertex( graph, I );
 
     //  정점과 정점을 간선으로 잇기 
-    AddEdge( A, CreateEdge( A, C, 0 ) );
+    AddEdge( A, CreateEdge( A, B, 0 ) );
     AddEdge( A, CreateEdge( A, D, 0 ) );
 
-    AddEdge( B, CreateEdge( B, C, 0 ) );
-    AddEdge( B, CreateEdge( B, E, 0 ) );
+    AddEdge( B, CreateEdge( B, F, 0 ) );
+    AddEdge( B, CreateEdge( B, G, 0 ) );
 
     AddEdge( C, CreateEdge( C, F, 0 ) );
     
-    AddEdge( D, CreateEdge( D, F, 0 ) );
-    AddEdge( D, CreateEdge( D, G, 0 ) );
+    AddEdge( D, CreateEdge( D, E, 0 ) );
 
+    AddEdge( E, CreateEdge( E, F, 0 ) );
     AddEdge( E, CreateEdge( E, G, 0 ) );
 
     AddEdge( F, CreateEdge( F, H, 0 ) );
     
     AddEdge( G, CreateEdge( G, H, 0 ) );
+
+    AddEdge( H, CreateEdge( H, I, 0 ) );
 
     //  위상 정렬 
     TopologicalSort( graph->Vertices, &SortedList );
@@ -58,7 +61,7 @@ int main( void )
 
     while ( CurrentNode != NULL )
     {
-        printf("%C ", CurrentNode->Data->Data );
+        printf("%s-> ", CurrentNode->Data->Data );
         CurrentNode = CurrentNode->NextNode;
     }
     printf("\n");

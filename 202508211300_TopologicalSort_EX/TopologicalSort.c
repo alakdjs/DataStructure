@@ -2,9 +2,11 @@
 
 void TopologicalSort( Vertex* V, Node** List )
 {
-    while ( V != NULL && V->Visited == NotVisited )
+    while ( V != NULL )
     {
-        TS_DFS( V, List );
+        if (V->Visited == NotVisited) {
+            TS_DFS(V, List);
+        }
 
         V = V->Next;
     }
@@ -27,7 +29,7 @@ void TS_DFS( Vertex* V, Node** List )
         E = E->Next;
     }
 
-    printf("%c\n", V->Data );
+    printf("%s\n", V->Data );
 
     NewHead = SLL_CreateNode( V );
     SLL_InsertNewHead( List, NewHead );
