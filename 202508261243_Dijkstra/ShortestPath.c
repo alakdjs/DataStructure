@@ -10,16 +10,16 @@ void Dijkstra(Graph* G, Vertex* StartVertex, Graph* ShortestPath)
 	Vertex* CurrentVertex = NULL;
 	Edge* CurrentEdge = NULL;
 
-	int* Weights = (int*)malloc(sizeof(int) * G->VertexCount);
-	Vertex** ShortestPathVertices = (Vertex**)malloc(sizeof(Vertex*) * G->VertexCount);
-	Vertex** Fringes = (Vertex**)malloc(sizeof(Vertex*) * G->VertexCount);
-	Vertex** Precedences = (Vertex**)malloc(sizeof(Vertex*) * G->VertexCount);
+	int* Weights = (int*)malloc(sizeof(int) * G->VertexCount);  // 경로 상 가중치 값 계속 더해서 기록
+	Vertex** ShortestPathVertices = (Vertex**)malloc(sizeof(Vertex*) * G->VertexCount); // 리스트 접근 용이하게 배열 생성
+	Vertex** Fringes = (Vertex**)malloc(sizeof(Vertex*) * G->VertexCount);     // 방문처리
+	Vertex** Precedences = (Vertex**)malloc(sizeof(Vertex*) * G->VertexCount); // 간선 정보 기록
 
 	CurrentVertex = G->Vertices;
 	while (CurrentVertex != NULL)
 	{
 		Vertex* NewVertex = CreateVertex(CurrentVertex->Data);
-		AddVertex(ShortestPath, NewVertex);
+		AddVertex(ShortestPath, NewVertex); // 그래프 저장할 공간
 
 		Fringes[i] = NULL;
 		Precedences[i] = NULL;
