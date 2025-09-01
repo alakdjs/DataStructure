@@ -27,11 +27,16 @@ int KnuthMorrisPratt(char* Text, int TextSize, int Start, char* Pattern, int Pat
 
 	int Position = -1;
 
-	int* Border = (int*)calloc(PatternSize + 1, sizeof(int));
+	int* Border = (int*)calloc(PatternSize + 1, sizeof(int)); // 경계테이블 생성
 
-	Preprocess(Pattern, PatternSize, Border);
+	Preprocess(Pattern, PatternSize, Border); // 경계 테이블 값을 생성
 
-	while (i < TextSize)
+	// BAABACABAABABAAB (문장)
+	// BAABABAA			(패턴)
+
+	// i : 0
+	// j : 0
+	while (i < TextSize)	// TextSize: 16
 	{
 		while (j >= 0 && Text[i] != Pattern[j])
 			j = Border[j];
@@ -39,7 +44,7 @@ int KnuthMorrisPratt(char* Text, int TextSize, int Start, char* Pattern, int Pat
 		i++;
 		j++;
 
-		if (j == PatternSize)
+		if (j == PatternSize)	// patternsize : 8
 		{
 			Position = i - j;
 			break;
